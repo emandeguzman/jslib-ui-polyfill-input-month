@@ -41,8 +41,9 @@
         );
     }
 
-    function createMonthDropdown(selected) {
+    function createMonthDropdown(selected, class_name) {
         var monthDropdown = document.createElement('select');
+        if (class_name) monthDropdown.classList.add(class_name);
         selected = selected || new Date().getUTCMonth();
         selected = selected.getUTCMonth ? selected.getUTCMonth() : selected;
         months.forEach(function (monthName, monthIdx) {
@@ -58,8 +59,9 @@
         return monthDropdown;
     }
 
-    function createYearDropdown(selected, dropdownYears) {
+    function createYearDropdown(selected, dropdownYears, class_name) {
         var yearDropdown = document.createElement('select');
+        if (class_name) yearDropdown.classList.add(class_name);
         selected = selected || new Date().getUTCFullYear();
         selected = selected.getUTCFullYear ? selected.getUTCFullYear() : selected;
         dropdownYears.forEach(function (year) {
@@ -91,12 +93,12 @@
         return years;
     }
 
-    function getLastDayOfMonth(dt) {
-        dt = dt instanceof Date ? dt : new Date(Date.parse(dt));
-        dt.setUTCMonth(dt.getUTCMonth() + 1)
-        dt = new Date(dt - 1);
-        return dt.getUTCDate();
-    }
+    // function getLastDayOfMonth(dt) {
+    //     dt = dt instanceof Date ? dt : new Date(Date.parse(dt));
+    //     dt.setUTCMonth(dt.getUTCMonth() + 1)
+    //     dt = new Date(dt - 1);
+    //     return dt.getUTCDate();
+    // }
 
     var YEAR_MONTH_PATT = /^\d\d\d\d-\d\d$/;
     monthInputs.forEach(function (monthInput) {
@@ -174,11 +176,11 @@
                     yearEl.value = initial.getUTCFullYear()
                 }
             } else {
-                yearEl = createYearDropdown(initial, years);
+                yearEl = createYearDropdown(initial, years, monthInput.getAttribute("data-year-class"));
             }
             yearEl.monthInputTarget = monthInput;
             yearEl.monthInputType = 'year';
-            monthEl = createMonthDropdown(initial);
+            monthEl = createMonthDropdown(initial, monthInput.getAttribute("data-month-class"));
             monthEl.monthInputTarget = monthInput;
             monthEl.monthInputType = 'month';
             monthInput.parentNode.insertBefore(monthEl, monthInput);
